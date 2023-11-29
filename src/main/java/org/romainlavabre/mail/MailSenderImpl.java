@@ -20,25 +20,49 @@ public class MailSenderImpl implements MailSender {
 
     @Override
     public boolean send( String from, List< String > to, String subject, String message ) {
+        to = overwriteTo( to );
         return getInstance().send( from, to, subject, message );
     }
 
 
     @Override
     public boolean send( String from, List< String > to, String subject, String message, List< File > files ) {
+        to = overwriteTo( to );
         return getInstance().send( from, to, subject, message, files );
     }
 
 
     @Override
     public boolean send( String from, String to, String subject, String message ) {
+        to = overwriteTo( to );
         return getInstance().send( from, to, subject, message );
     }
 
 
     @Override
     public boolean send( String from, String to, String subject, String message, List< File > files ) {
+        to = overwriteTo( to );
         return getInstance().send( from, to, subject, message, files );
+    }
+
+
+    protected String overwriteTo( String to ) {
+        if ( MailConfigurer.get().getRedirectTo() != null
+                && !MailConfigurer.get().getRedirectTo().equals( "NONE" ) ) {
+            return MailConfigurer.get().getRedirectTo();
+        }
+
+        return to;
+    }
+
+
+    protected List< String > overwriteTo( List< String > to ) {
+        if ( MailConfigurer.get().getRedirectTo() != null
+                && !MailConfigurer.get().getRedirectTo().equals( "NONE" ) ) {
+            return List.of( MailConfigurer.get().getRedirectTo() );
+        }
+
+        return to;
     }
 
 

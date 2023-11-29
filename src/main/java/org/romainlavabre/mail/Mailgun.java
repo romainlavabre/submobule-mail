@@ -142,7 +142,7 @@ public class Mailgun implements MailSender {
      * @return
      */
     protected Mailgun addMessage( final MultipartBody multipartBody, final String message ) {
-        if ( message.contains( "<html>" ) ) {
+        if ( message.contains( "<html" ) ) {
             multipartBody.field( "html", message );
         } else {
             multipartBody.field( "text", message );
