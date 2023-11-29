@@ -83,7 +83,7 @@ public class Mailgun implements MailSender {
                 Unirest.post( "https://api.mailgun.net/v3/" + MailConfigurer.get().getMailgunDomain() + "/messages" );
 
         return requestWithBody
-                .basicAuth( "api", MailConfigurer.init().getMailgunPrivateKey() )
+                .basicAuth( "api", MailConfigurer.get().getMailgunPrivateKey() )
                 .field( "from", from )
                 .field( "o:require-tls", "true" )
                 .field( "o:skip-verification", "false" )

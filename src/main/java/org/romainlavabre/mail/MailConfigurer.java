@@ -1,5 +1,6 @@
 package org.romainlavabre.mail;
 
+import org.romainlavabre.mail.exception.AlreadyInitializedException;
 import org.romainlavabre.mail.exception.NotInitializedException;
 
 public class MailConfigurer {
@@ -10,9 +11,14 @@ public class MailConfigurer {
     private        String         smtpPort;
     private        String         smtpUsername;
     private        String         smtpPassword;
+    private        String         redirectTo;
 
 
     public MailConfigurer() {
+        if ( INSTANCE != null ) {
+            throw new AlreadyInitializedException();
+        }
+
         INSTANCE = this;
     }
 
@@ -116,6 +122,21 @@ public class MailConfigurer {
      */
     public MailConfigurer setSmtpPassword( String smtpPassword ) {
         this.smtpPassword = smtpPassword;
+
+        return this;
+    }
+
+
+    protected String getRedirectTo() {
+        return redirectTo;
+    }
+
+
+    /**
+     * @param redirectTo If not null and not equal to NONE, emails will be redirected to the specified email
+     */
+    public MailConfigurer setRedirectTo( String redirectTo ) {
+        this.redirectTo = redirectTo;
 
         return this;
     }
