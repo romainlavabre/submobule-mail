@@ -1,3 +1,4 @@
+4.1.1: FIX bad class loader chosen by jakarta.mail
 4.1.0: ADD Mail redirection
 4.0.1: FIX Accept only once configuration
 4.0.0: fairfair-cloud/roadmap#16
