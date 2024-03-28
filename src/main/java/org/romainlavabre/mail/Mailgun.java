@@ -4,7 +4,10 @@ import kong.unirest.*;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Romain Lavabre <romainlavabre98@gmail.com>
@@ -15,27 +18,25 @@ public class Mailgun implements MailSender {
 
     @Override
     public boolean send( String from, final List< String > to, final String subject, final String message ) {
-        final MultipartBody multipartBody = this.init( from );
-
-        this.addRecipient( multipartBody, to )
-                .addSubject( multipartBody, subject )
-                .addMessage( multipartBody, message );
-
-        final HttpResponse< JsonNode > response = multipartBody.asJson();
-
-
-        return response.isSuccess();
+        return send( from, to, subject, message, new ArrayList<>(), new HashMap<>() );
     }
 
 
     @Override
     public boolean send( String from, final List< String > to, final String subject, final String message, final List< File > files ) {
+        return send( from, to, subject, message, files, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, List< String > to, String subject, String message, List< File > files, Map< String, String > headers ) {
         final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
                 .addSubject( multipartBody, subject )
                 .addFile( multipartBody, files )
-                .addMessage( multipartBody, message );
+                .addMessage( multipartBody, message )
+                .setHeaders( multipartBody, headers );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -45,13 +46,22 @@ public class Mailgun implements MailSender {
 
     @Override
     public boolean send( String from, final String to, final String subject, final String message ) {
+        return send( from, to, subject, message, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, Map< String, String > headers ) {
         final MultipartBody multipartBody = this.init( from );
 
-        this.addRecipient( multipartBody, to )
+        this
+                .addRecipient( multipartBody, to )
                 .addSubject( multipartBody, subject )
-                .addMessage( multipartBody, message );
+                .addMessage( multipartBody, message )
+                .setHeaders( multipartBody, headers );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
+
 
         return response.isSuccess();
     }
@@ -59,12 +69,19 @@ public class Mailgun implements MailSender {
 
     @Override
     public boolean send( String from, final String to, final String subject, final String message, final List< File > files ) {
+        return send( from, to, subject, message, files, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, List< File > files, Map< String, String > headers ) {
         final MultipartBody multipartBody = this.init( from );
 
         this.addRecipient( multipartBody, to )
                 .addSubject( multipartBody, subject )
                 .addFile( multipartBody, files )
-                .addMessage( multipartBody, message );
+                .addMessage( multipartBody, message )
+                .setHeaders( multipartBody, headers );
 
         final HttpResponse< JsonNode > response = multipartBody.asJson();
 
@@ -161,6 +178,15 @@ public class Mailgun implements MailSender {
 
         for ( final File file : files ) {
             multipartBody.field( "attachment", file );
+        }
+
+        return this;
+    }
+
+
+    protected Mailgun setHeaders( final MultipartBody multipartBody, Map< String, String > headers ) {
+        for ( Map.Entry< String, String > entry : headers.entrySet() ) {
+            multipartBody.field( "h:" + entry.getKey(), entry.getValue() );
         }
 
         return this;

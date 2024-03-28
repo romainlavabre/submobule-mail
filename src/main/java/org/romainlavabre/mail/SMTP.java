@@ -6,7 +6,9 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -35,7 +37,19 @@ public class SMTP implements MailSender {
 
 
     @Override
+    public boolean send( String from, List< String > to, String subject, String message, List< File > files, Map< String, String > headers ) {
+        return false;
+    }
+
+
+    @Override
     public boolean send( String from, final String to, final String subject, final String message ) {
+        return send( from, to, subject, message, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, Map< String, String > headers ) {
         Properties prop = new Properties();
         prop.put( "mail.smtp.host", MailConfigurer.get().getSmtpHost() );
         prop.put( "mail.smtp.port", MailConfigurer.get().getSmtpPort() );
@@ -60,6 +74,10 @@ public class SMTP implements MailSender {
             mes.setSubject( subject );
             mes.setContent( message, "text/html" );
 
+            for ( Map.Entry< String, String > entry : headers.entrySet() ) {
+                mes.addHeader( entry.getKey(), entry.getValue() );
+            }
+
             Transport.send( mes );
 
             return true;
@@ -75,4 +93,9 @@ public class SMTP implements MailSender {
         return false;
     }
 
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, List< File > files, Map< String, String > headers ) {
+        return false;
+    }
 }

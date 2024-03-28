@@ -4,7 +4,10 @@ import org.romainlavabre.exception.HttpInternalServerErrorException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service( "mailSender" )
 public class MailSenderImpl implements MailSender {
@@ -20,29 +23,46 @@ public class MailSenderImpl implements MailSender {
 
     @Override
     public boolean send( String from, List< String > to, String subject, String message ) {
-        to = overwriteTo( to );
-        return getInstance().send( from, to, subject, message );
+        return send( from, to, subject, message, new ArrayList<>(), new HashMap<>() );
     }
 
 
     @Override
     public boolean send( String from, List< String > to, String subject, String message, List< File > files ) {
+        return send( from, to, subject, message, files, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, List< String > to, String subject, String message, List< File > files, Map< String, String > headers ) {
         to = overwriteTo( to );
-        return getInstance().send( from, to, subject, message, files );
+        return getInstance().send( from, to, subject, message, files, headers );
     }
 
 
     @Override
     public boolean send( String from, String to, String subject, String message ) {
+        return send( from, to, subject, message, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, Map< String, String > headers ) {
         to = overwriteTo( to );
-        return getInstance().send( from, to, subject, message );
+        return getInstance().send( from, to, subject, message, headers );
     }
 
 
     @Override
     public boolean send( String from, String to, String subject, String message, List< File > files ) {
+        return send( from, to, subject, message, files, new HashMap<>() );
+    }
+
+
+    @Override
+    public boolean send( String from, String to, String subject, String message, List< File > files, Map< String, String > headers ) {
         to = overwriteTo( to );
-        return getInstance().send( from, to, subject, message, files );
+        return getInstance().send( from, to, subject, message, files, headers );
     }
 
 
