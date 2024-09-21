@@ -1,6 +1,6 @@
 package org.romainlavabre.mail;
 
-import kong.unirest.*;
+import kong.unirest.core.*;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

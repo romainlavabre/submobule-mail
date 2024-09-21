@@ -1,3 +1,4 @@
+5.0.0: FIX CVE
 4.2.0: ADD Headers option
 4.1.1: FIX bad class loader chosen by jakarta.mail
 4.1.0: ADD Mail redirection

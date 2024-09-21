@@ -1,6 +1,7 @@
 package org.romainlavabre.mail;
 
 import org.romainlavabre.exception.HttpInternalServerErrorException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -15,7 +16,9 @@ public class MailSenderImpl implements MailSender {
     protected final MailSender mailSenderSMTP;
 
 
-    public MailSenderImpl( MailSender mailSenderMailgun, MailSender mailSenderSMTP ) {
+    public MailSenderImpl(
+            @Qualifier("mailSenderMailgun") MailSender mailSenderMailgun,
+            @Qualifier("mailSenderSMTP") MailSender mailSenderSMTP ) {
         this.mailSenderMailgun = mailSenderMailgun;
         this.mailSenderSMTP    = mailSenderSMTP;
     }
