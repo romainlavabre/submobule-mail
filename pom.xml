@@ -6,7 +6,7 @@
 
     <groupId>org.romainlavabre</groupId>
     <artifactId>mail</artifactId>
-    <version>5.0.0</version>
+    <version>5.1.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -128,4 +128,11 @@
             <url>s3://fairfair-maven-repository</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>fairfair-maven-repository</id>
+            <url>https://fairfair-maven-repository.s3.eu-west-3.amazonaws.com</url>
+        </repository>
+    </repositories>
 </project>

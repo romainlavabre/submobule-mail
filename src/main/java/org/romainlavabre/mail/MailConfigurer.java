@@ -5,6 +5,7 @@ import org.romainlavabre.mail.exception.NotInitializedException;
 
 public class MailConfigurer {
     private static MailConfigurer INSTANCE;
+    private        String         mailgunUrl = "https://api.mailgun.net/v3/";
     private        String         mailgunDomain;
     private        String         mailgunPrivateKey;
     private        String         smtpHost;
@@ -34,6 +35,26 @@ public class MailConfigurer {
 
     public static MailConfigurer init() {
         return new MailConfigurer();
+    }
+
+
+    protected String getMailgunUrl() {
+        return mailgunUrl;
+    }
+
+
+    /**
+     * If you want to replace the default URL
+     * <br/>
+     * Default : <a href="https://api.mailgun.net/v3/">https://api.mailgun.net/v3/</a>
+     *
+     * @param mailgunUrl New Url
+     * @return
+     */
+    public MailConfigurer setMailgunUrl( String mailgunUrl ) {
+        this.mailgunUrl = mailgunUrl;
+
+        return this;
     }
 
 

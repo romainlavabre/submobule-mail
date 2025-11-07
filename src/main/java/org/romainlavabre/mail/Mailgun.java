@@ -97,7 +97,7 @@ public class Mailgun implements MailSender {
     protected MultipartBody init( String from ) {
 
         final HttpRequestWithBody requestWithBody =
-                Unirest.post( "https://api.mailgun.net/v3/" + MailConfigurer.get().getMailgunDomain() + "/messages" );
+                Unirest.post( MailConfigurer.get().getMailgunUrl() + MailConfigurer.get().getMailgunDomain() + "/messages" );
 
         return requestWithBody
                 .basicAuth( "api", MailConfigurer.get().getMailgunPrivateKey() )
