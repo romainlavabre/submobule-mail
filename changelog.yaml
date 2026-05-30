@@ -1,3 +1,4 @@
+6.0.0: Add AWS SES provider
 5.1.0: ADD Mailgun URL overwrite option
 5.0.0: FIX CVE
 4.2.0: ADD Headers option

@@ -12,6 +12,9 @@ public class MailConfigurer {
     private        String         smtpPort;
     private        String         smtpUsername;
     private        String         smtpPassword;
+    private        String         awsFrom;
+    private        String         awsAccessKeyId;
+    private        String         awsSecretAccessKey;
     private        String         redirectTo;
 
 
@@ -144,6 +147,44 @@ public class MailConfigurer {
     public MailConfigurer setSmtpPassword( String smtpPassword ) {
         this.smtpPassword = smtpPassword;
 
+        return this;
+    }
+
+
+    protected String getAwsFrom() {
+        return awsFrom;
+    }
+
+
+    /**
+     *
+     * @param awsFrom USER <email@domain.com>
+     * @return
+     */
+    public MailConfigurer setAwsFrom( String awsFrom ) {
+        this.awsFrom = awsFrom;
+        return this;
+    }
+
+
+    protected String getAwsAccessKeyId() {
+        return awsAccessKeyId;
+    }
+
+
+    public MailConfigurer setAwsAccessKeyId( String awsAccessKeyId ) {
+        this.awsAccessKeyId = awsAccessKeyId;
+        return this;
+    }
+
+
+    protected String getAwsSecretAccessKey() {
+        return awsSecretAccessKey;
+    }
+
+
+    public MailConfigurer setAwsSecretAccessKey( String awsSecretAccessKey ) {
+        this.awsSecretAccessKey = awsSecretAccessKey;
         return this;
     }
 
