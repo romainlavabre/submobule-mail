@@ -16,6 +16,9 @@ public class MailConfigurer {
     private        String         awsAccessKeyId;
     private        String         awsSecretAccessKey;
     private        String         redirectTo;
+    private        String         smtpUri;
+    private        int            smtpConnectTimeoutMillis = 10_000;
+    private        int            smtpTimeoutMillis        = 30_000;
 
 
     public MailConfigurer() {
@@ -37,6 +40,17 @@ public class MailConfigurer {
 
 
     public static MailConfigurer init() {
+        return new MailConfigurer();
+    }
+
+
+    /**
+     * Like {@link #init()}, but replaces a previous configuration instead of failing: for an application context
+     * started several times in the same JVM (tests).
+     */
+    public static synchronized MailConfigurer initOrReplace() {
+        INSTANCE = null;
+
         return new MailConfigurer();
     }
 
@@ -199,6 +213,57 @@ public class MailConfigurer {
      */
     public MailConfigurer setRedirectTo( String redirectTo ) {
         this.redirectTo = redirectTo;
+
+        return this;
+    }
+
+
+    protected String getSmtpUri() {
+        return smtpUri;
+    }
+
+
+    /**
+     * The whole SMTP connection in one value, used by {@link MailSender#send(Mail)}:
+     * <ul>
+     *     <li><code>smtps://user:password@host:465</code>: implicit TLS</li>
+     *     <li><code>smtp://user:password@host:587</code>: STARTTLS when the server offers it</li>
+     *     <li><code>smtp://host:1025</code>: no login (a local mail catcher)</li>
+     * </ul>
+     * User and password are URL-decoded.
+     */
+    public MailConfigurer setSmtpUri( String smtpUri ) {
+        this.smtpUri = smtpUri;
+
+        return this;
+    }
+
+
+    protected int getSmtpConnectTimeoutMillis() {
+        return smtpConnectTimeoutMillis;
+    }
+
+
+    /**
+     * @param smtpConnectTimeoutMillis default 10 000
+     */
+    public MailConfigurer setSmtpConnectTimeoutMillis( int smtpConnectTimeoutMillis ) {
+        this.smtpConnectTimeoutMillis = smtpConnectTimeoutMillis;
+
+        return this;
+    }
+
+
+    protected int getSmtpTimeoutMillis() {
+        return smtpTimeoutMillis;
+    }
+
+
+    /**
+     * @param smtpTimeoutMillis read and write timeout, default 30 000
+     */
+    public MailConfigurer setSmtpTimeoutMillis( int smtpTimeoutMillis ) {
+        this.smtpTimeoutMillis = smtpTimeoutMillis;
 
         return this;
     }

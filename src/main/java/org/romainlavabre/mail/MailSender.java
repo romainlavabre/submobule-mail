@@ -78,4 +78,16 @@ public interface MailSender {
      * @return TRUE is mail sent
      */
     boolean send( String from, String to, String subject, String message, List< File > files, Map< String, String > headers );
+
+
+    /**
+     * SMTP only. Unlike the boolean methods, a failure is never swallowed.
+     *
+     * @return the Message-ID of the sent mail, null when the configuration blocks the mails
+     * @throws org.romainlavabre.mail.exception.MailConnectionException nothing was sent: it can be sent again
+     * @throws org.romainlavabre.mail.exception.MailSendException       the mail may have left
+     */
+    default String send( Mail mail ) {
+        throw new UnsupportedOperationException( "[mail] send( Mail ) is only implemented over SMTP" );
+    }
 }

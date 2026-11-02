@@ -93,6 +93,19 @@ public class MailSenderImpl implements MailSender {
     }
 
 
+    @Override
+    public String send( Mail mail ) {
+        String to = overwriteTo( mail.getTo() );
+
+        if ( to.equalsIgnoreCase( "BLOCK" ) ) {
+            LOGGER.warn( "Actually configured to block email" );
+            return null;
+        }
+
+        return mailSenderSMTP.send( to.equals( mail.getTo() ) ? mail : mail.redirectTo( to ) );
+    }
+
+
     protected String overwriteTo( String to ) {
         if ( MailConfigurer.get().getRedirectTo() != null
                 && !MailConfigurer.get().getRedirectTo().equals( "NONE" ) ) {
